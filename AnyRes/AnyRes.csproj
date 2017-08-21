@@ -31,33 +31,30 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="System" />
-    <Reference Include="KSPAssets">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\KSPAssets.dll</HintPath>
-    </Reference>
-    <Reference Include="KSPCore">
-      <HintPath>..\..\..\Desktop\KSPData\KSPCore.dll</HintPath>
-    </Reference>
-    <Reference Include="KSPUtil">
-      <HintPath>..\..\..\Desktop\KSPData\KSPUtil.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp.dll</HintPath>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\UnityEngine.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEngine.UI">
-      <HintPath>..\..\..\..\..\..\Program Files (x86)\Steam\steamapps\common\Kerbal Space Program\KSP_Data\Managed\UnityEngine.UI.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Handler.cs" />
     <Compile Include="Presets.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>R:\KSP_1.3.0_dev\KSP_x64_Data\Managed\Assembly-CSharp.dll</HintPath>
+    </Reference>
+    <Reference Include="Assembly-CSharp-firstpass, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>R:\KSP_1.3.0_dev\KSP_x64_Data\Managed\Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+      <HintPath>R:\KSP_1.3.0_dev\KSP_x64_Data\Managed\System.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>R:\KSP_1.3.0_dev\KSP_x64_Data\Managed\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>R:\KSP_1.3.0_dev\KSP_x64_Data\Managed\UnityEngine.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
 </Project>

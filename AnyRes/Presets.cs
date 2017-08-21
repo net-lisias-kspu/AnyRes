@@ -15,10 +15,14 @@ namespace AnyRes.Util
 		public bool windowEnabled = false;
 		public bool newEnabled = false;
 		public bool loadEnabled = false;
+        public bool deleteEnabled = false;
+        public bool confirmDeleteEnabled = false;
+        string deleteFile;
 
-		public Rect windowRect = new Rect(30, 30, 200, 100);
+		public Rect windowRect = new Rect(30, 30, 200, 150);
 		public Rect newRect = new Rect(30, 30, 200, 230);
 		public Rect loadRect = new Rect(30, 30, 200, 400);
+        public Rect deleteRect = new Rect((Screen.width - 200)/2, (Screen.height - 100) /2, 200, 100);
 
 		string newName = "Name";
 		string newX = "1280";
@@ -45,24 +49,44 @@ namespace AnyRes.Util
 			GUI.skin = HighLogic.Skin;
 
 			if (windowEnabled) {
+                if (windowRect.x + windowRect.width > Screen.width)
+                    AnyRes.anyresWinRect.x = Screen.width - AnyRes.anyresWinRect.width - windowRect.width;
 
-				windowRect = GUI.Window (09272, windowRect, onWindow, "Presets");
+                if ( windowRect.height + windowRect.height > Screen.height)
+                    AnyRes.anyresWinRect.y = Screen.height - Math.Max(AnyRes.anyresWinRect.height, windowRect.height);
+
+                windowRect = GUI.Window (09272, windowRect, onWindow, "Presets");
 
 			}
 
 			if (newEnabled) {
+                if (newRect.x + newRect.width > Screen.width)
+                    AnyRes.anyresWinRect.x = Screen.width - AnyRes.anyresWinRect.width - newRect.width - windowRect.width; ;
 
-				newRect = GUI.Window (09273, newRect, onNew, "New Preset");
+                if (newRect.y + newRect.height > Screen.height)
+                    AnyRes.anyresWinRect.y = Screen.height - Math.Max(AnyRes.anyresWinRect.height, newRect.height);
+
+                newRect = GUI.Window (09273, newRect, onNew, "New Preset");
 
 			}
 
-			if (loadEnabled) {
+			if (loadEnabled | deleteEnabled) {
 
-				loadRect = GUI.Window (09274, loadRect, onLoad, "Load Preset");
+                if (loadRect.x + loadRect.width > Screen.width)
+                    AnyRes.anyresWinRect.x = Screen.width - AnyRes.anyresWinRect.width - loadRect.width - windowRect.width; ;
+                if (loadRect.y + loadRect.height > Screen.height)
+                    AnyRes.anyresWinRect.y = Screen.height - Math.Max(AnyRes.anyresWinRect.height, loadRect.height);
 
-			}
+                if (loadEnabled)
+                    loadRect = GUI.Window(09274, loadRect, onLoad, "Load Preset");
+                else
+                    loadRect = GUI.Window(09275, loadRect, onDelete, "Delete Preset");
 
-		}
+            }
+            if (confirmDeleteEnabled)
+                deleteRect = GUI.Window(09276, deleteRect, ConfirmDelete, "Confirm");
+
+        }
 
 		void onWindow (int windowID) {
 
@@ -80,12 +104,20 @@ namespace AnyRes.Util
 				files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/", "*.cfg");
                 newEnabled = false;
 			}
-			GUILayout.EndVertical ();
+            if (GUILayout.Button("Delete"))
+            {
+
+                deleteEnabled = !deleteEnabled;
+                files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/", "*.cfg");
+                newEnabled = false;
+            }
+            GUILayout.EndVertical ();
 
 			GUI.DragWindow ();
 
 		}
 
+       
 		void onNew(int windowID) {
 
 			GUILayout.BeginVertical ();
@@ -122,10 +154,32 @@ namespace AnyRes.Util
 
 		}
 
+        void ConfirmDelete(int id)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Confirm delete");
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Cancel"))
+            {
+                deleteEnabled = false;
+                confirmDeleteEnabled = false;
+            }
+            if (GUILayout.Button("Yes"))
+            {
+
+                deleteEnabled = false;
+                confirmDeleteEnabled = false;
+                System.IO.File.Delete(deleteFile);
+            }
+            GUILayout.EndHorizontal();
+        }
+
 		void onLoad (int windowID) {
-
-
-
+            
 			GUILayout.BeginScrollView (new Vector2 (0, 0));
 			for (int i = files.Length - 1; i >= 0; --i)
 			{
@@ -157,6 +211,31 @@ namespace AnyRes.Util
 
 		}
 
-	}
+        void onDelete(int windowID)
+        {
+
+            GUILayout.BeginScrollView(new Vector2(0, 0));
+            for (int i = files.Length - 1; i >= 0; --i)
+            {
+
+                file = files[i];
+
+                ConfigNode config = ConfigNode.Load(file);
+                if (GUILayout.Button(config.GetValue("name")))
+                {
+
+                    confirmDeleteEnabled = true;
+                    deleteFile = file;
+
+                }
+
+            }
+            GUILayout.EndScrollView();
+
+            GUI.DragWindow();
+
+        }
+
+    }
 }
 

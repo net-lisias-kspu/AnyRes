@@ -87,7 +87,7 @@ namespace AnyRes
 
                 appLauncherButton = ApplicationLauncher.Instance.AddModApplication(
                     () => { windowEnabled = true; },
-                    () => { presets.newEnabled = false; presets.loadEnabled = false; presets.windowEnabled = false; windowEnabled = false; },
+                    () => { presets.newEnabled = false; presets.loadEnabled = false; presets.windowEnabled = false; windowEnabled = false; ; presets.deleteEnabled = false; },
                     () => { },
                     () => { },
                     () => { },
@@ -138,8 +138,16 @@ namespace AnyRes
 			GUI.skin = HighLogic.Skin;
 
 			if (windowEnabled) {
+                if (anyresWinRect.x + anyresWinRect.width > Screen.width)
+                    anyresWinRect.x = Screen.width - anyresWinRect.width ;
+                if (anyresWinRect.y + anyresWinRect.height > Screen.height)
+                    anyresWinRect.y = Screen.height -anyresWinRect.height;
 
-				anyresWinRect = GUI.Window (09271, anyresWinRect, GUIActive, "AnyRes");
+
+                anyresWinRect.x = Math.Max(anyresWinRect.x, 0);
+                anyresWinRect.y = Math.Max(anyresWinRect.y, 0);
+
+                anyresWinRect = GUI.Window (09271, anyresWinRect, GUIActive, "AnyRes");
 
 			}
 
