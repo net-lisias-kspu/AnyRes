@@ -1,8 +1,9 @@
 ﻿using System;
 using UnityEngine;
+using System.IO;
 using System.Text.RegularExpressions;  //Get Regex
 using KSP.UI.Screens;
-using AnyRes.Util;
+using ToolbarControl_NS;
 
 namespace AnyRes
 {
@@ -11,8 +12,10 @@ namespace AnyRes
 	public class AnyRes : MonoBehaviour
 	{
 
-		public static Rect anyresWinRect = new Rect(35, 99, 200, 190);
+		public static Rect anyresWinRect = new Rect(35, 99, 400, 275);
+        public Rect deleteRect = new Rect((Screen.width - 200) / 2, (Screen.height - 100) / 2, 200, 100);
 
+        public string nameString = "";
 		public string xString = "1280";
 		public string yString = "720";
 
@@ -23,13 +26,19 @@ namespace AnyRes
 		public bool fullScreen = true;
 		public bool reloadScene = false;
 
-		private static ApplicationLauncherButton appLauncherButton = null;
+		//private static ApplicationLauncherButton appLauncherButton = null;
 
-		Presets presets;
+        ToolbarControl toolbarControl;
 
-        
+        string[] files;
+        string file = "";
+        string deleteFile = "";
+        string deleteFileName = "";
+        Vector2 scrollViewPos;
+        bool deleteEnabled = false;
+        bool confirmDeleteEnabled = false;
 
-		void Start() {
+        void Start() {
 
             if (HighLogic.LoadedScene == GameScenes.SETTINGS)
             {
@@ -48,10 +57,7 @@ namespace AnyRes
             }
 
             Debug.Log ("[AnyRes] Loaded");
-
-			presets = gameObject.AddComponent<Presets> () as Presets;
-
-			
+	
             //Debug.Log("[AnyRes] 1");
             
             xString = GameSettings.SCREEN_RESOLUTION_WIDTH.ToString ();
@@ -59,14 +65,37 @@ namespace AnyRes
 			fullScreen = GameSettings.FULLSCREEN;
             //Debug.Log("[AnyRes] 2");
 
-            
+
             //DontDestroyOnLoad(this);
+            UpdateFilesList();
+
+            toolbarControl = gameObject.AddComponent<ToolbarControl>();
+            toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
+            toolbarControl.AddToAllToolbars(OnTrue, OnFalse,
+                      ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW |
+                      ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.SPH | 
+                      ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
+
+                      "AnyRes",
+                      "AnyResButton",
+                      "AnyRes/textures/Toolbar_32",
+                      "AnyRes/textures/Toolbar_24",
+                      "AnyRes"
+              );
 
         }
 
-		public void OnDisable ()
+        void OnTrue()
+        {
+            windowEnabled = true;
+        }
+        void OnFalse()
+        {
+            windowEnabled = false;
+        }
+        public void OnDisable ()
 		{
-
+#if false
             //Destroy the button in order to create a new one.  It's required with multiple scene handling, unfortunately.
             if (appLauncherButton != null)
             {
@@ -74,42 +103,46 @@ namespace AnyRes
                 appLauncherButton = null;
                 Debug.Log("[AnyRes] Remove application button");
             }
+#endif
+            toolbarControl.OnDestroy();
+            Destroy(toolbarControl);
+        }
 
-		}
 
-		void Update() {
+        void Update() {
 
             //Thanks bananashavings http://forum.kerbalspaceprogram.com/index.php?/profile/156147-bananashavings/ - https://gist.github.com/bananashavings/e698f4359e1628b5d6ef
             //Also thanks to Crzyrndm for the fix to that code!
             //(HighLogic.LoadedScene == GameScenes.TRACKSTATION || HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR)
+#if false
             if (appLauncherButton == null && (HighLogic.LoadedScene == GameScenes.TRACKSTATION || HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR))
             {
 
                 appLauncherButton = ApplicationLauncher.Instance.AddModApplication(
                     () => { windowEnabled = true; },
-                    () => { presets.newEnabled = false; presets.loadEnabled = false; presets.windowEnabled = false; windowEnabled = false; ; presets.deleteEnabled = false; },
+                    () => {   windowEnabled = false; },
                     () => { },
                     () => { },
                     () => { },
                     () => { },
                     ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW | ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.SPH | ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
-                    (Texture)GameDatabase.Instance.GetTexture("AnyRes/textures/toolbar", false));
+                    (Texture)GameDatabase.Instance.GetTexture("AnyRes/textures/Toolbar", false));
 
             }
-
+#endif
             if ((GameSettings.MODIFIER_KEY.GetKey() ) && Input.GetKeyDown (KeyCode.Slash)) {
 
 				windowEnabled = !windowEnabled;
 				if (ApplicationLauncher.Ready) {
 
-					if (appLauncherButton != null){
+					if (toolbarControl != null){
 						if (windowEnabled) {
 
-							appLauncherButton.SetTrue (true);
+                            toolbarControl.SetTrue (true);
 
 						} else {
 
-							appLauncherButton.SetFalse (true);
+                            toolbarControl.SetFalse (true);
 
 						}
 					}
@@ -117,25 +150,19 @@ namespace AnyRes
 				}
 
 			}
-            
-            presets.windowRect.x = anyresWinRect.xMin + anyresWinRect.width;
-            presets.windowRect.y = anyresWinRect.yMin;
-            presets.loadRect.x = presets.windowRect.xMin + presets.windowRect.width;
-            presets.loadRect.y = presets.windowRect.yMin;
-            presets.newRect.x = presets.windowRect.xMin + presets.windowRect.width;
-            presets.newRect.y = anyresWinRect.yMin;
 
             //			Meant for debugging
             //			Debug.Log ("X: " + anyresWinRect.x.ToString ());
             //			Debug.Log ("Y: " + anyresWinRect.y.ToString ());
 
 
-
         }
 
-		void OnGUI() {
-
-			GUI.skin = HighLogic.Skin;
+		void OnGUI()
+        {
+            if (toolbarControl != null)
+                toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
+            GUI.skin = HighLogic.Skin;
 
 			if (windowEnabled) {
                 if (anyresWinRect.x + anyresWinRect.width > Screen.width)
@@ -150,40 +177,25 @@ namespace AnyRes
                 anyresWinRect = GUI.Window (09271, anyresWinRect, GUIActive, "AnyRes");
 
 			}
-
-		}
+            if (confirmDeleteEnabled)
+                deleteRect = GUI.Window(09276, deleteRect, ConfirmDelete, "Confirm");
+        }
 
 		void GUIActive(int windowID) {
-
-			if (GUI.Button (new Rect (0, 0, 50, 25), "Presets")) {
-
-				presets.windowEnabled = !presets.windowEnabled;
-                if (!presets.windowEnabled)
-                {
-                    presets.loadEnabled = false;
-                }
-                else
-                {
-                    //presets.windowRect = new Rect(anyresWinRect.xMin + anyresWinRect.width, anyresWinRect.yMin, 200, 100);
-                    presets.windowRect.x = anyresWinRect.xMin + anyresWinRect.width;
-                    presets.windowRect.y = anyresWinRect.yMin;
-                    //presets.loadRect = new Rect(presets.windowRect.xMin + presets.windowRect.width, anyresWinRect.yMin, 200, 400);
-                    presets.loadRect.x = presets.windowRect.xMin + presets.windowRect.width;
-                    presets.loadRect.y = presets.windowRect.yMin;
-                    //presets.newRect = new Rect(presets.windowRect.xMin + presets.windowRect.width, anyresWinRect.yMin, 200, 230);
-                    presets.newRect.x = presets.windowRect.xMin + presets.windowRect.width;
-                    presets.newRect.y = anyresWinRect.yMin;
-
-                }
-            }
-
 			if (HighLogic.LoadedScene == GameScenes.SETTINGS) {
 
 				GUI.BringWindowToFront (09271);
 
 			}
-			GUILayout.BeginVertical ();
-			GUILayout.BeginHorizontal ();
+            GUILayout.BeginHorizontal();
+
+            GUILayout.BeginVertical ();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Name: ");
+            nameString = GUILayout.TextField(nameString);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal ();
 			GUILayout.Label ("Width: ");
 			xString = GUILayout.TextField (xString);
 			xString = Regex.Replace (xString, @"[^0-9]", "");
@@ -194,7 +206,7 @@ namespace AnyRes
 			yString = Regex.Replace (yString, @"[^0-9]", "");
 			GUILayout.EndHorizontal ();
 			fullScreen = GUILayout.Toggle (fullScreen, "Fullscreen");
-			reloadScene = GUILayout.Toggle (reloadScene, "Reload scene");
+//			reloadScene = GUILayout.Toggle (reloadScene, "Reload scene");
 			if (GUILayout.Button("Set Screen Resolution")) {
 
 				if (xString != null && yString != null) {
@@ -210,7 +222,8 @@ namespace AnyRes
 						GameSettings.SaveSettings ();
 						Screen.SetResolution(x, y, fullScreen);
 						Debug.Log ("[AnyRes] Set screen resolution");
-						if (reloadScene) {
+#if false
+                        if (reloadScene) {
 
 							if (HighLogic.LoadedScene != GameScenes.LOADING) {
 								HighLogic.LoadScene (HighLogic.LoadedScene);
@@ -221,7 +234,7 @@ namespace AnyRes
 							}
 
 						}
-
+#endif
 					} else {
 
 						ScreenMessages.PostScreenMessage("One or both of your values is too small.  Please enter a valid value.", 1, ScreenMessageStyle.UPPER_CENTER);
@@ -235,12 +248,128 @@ namespace AnyRes
 				}
 
 			}
-			GUILayout.EndVertical();
+
+            if (nameString == "")
+                GUI.enabled = false;
+            if (GUILayout.Button("Save"))
+            {
+                var newName = nameString;
+                var newX = xString;
+                var newY = yString;
+                var newFullscreen = fullScreen;
+                ConfigNode config = new ConfigNode(newName);
+                config.AddValue("name", newName);
+                config.AddValue("x", newX);
+                config.AddValue("y", newY);
+                config.AddValue("fullscreen", newFullscreen.ToString());
+                config.Save(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/" + newName + ".cfg");
+
+                ScreenMessages.PostScreenMessage("Preset saved.  You can change the preset later by using the same name in this editor.", 5, ScreenMessageStyle.UPPER_CENTER);
+                UpdateFilesList();
+
+            }
+
+
+            if (files.Length == 0)
+                GUI.enabled = false;
+            else
+                GUI.enabled = true;
+            if (deleteEnabled)
+            {
+                if (GUILayout.Button("Disable Delete"))
+                {
+                    deleteEnabled = false;
+                }
+
+            }
+            else
+            {
+                if (GUILayout.Button("Enable Delete"))
+                {
+                    deleteEnabled = true;
+                }
+            }
+            if (ToolbarManager.ToolbarAvailable)
+                HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy = GUILayout.Toggle(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy, "Use Blizzy button");
+            GUILayout.EndVertical();
+            GUILayout.BeginVertical();
+         
+            scrollViewPos = GUILayout.BeginScrollView(scrollViewPos);
+            for (int i = files.Length - 1; i >= 0; --i)
+            {
+
+                file = files[i];
+
+                ConfigNode config = ConfigNode.Load(file);
+                if (deleteEnabled)
+                {
+                    if (GUILayout.Button("Delete " + config.GetValue("name")))
+                    {
+                        confirmDeleteEnabled = true;
+                        deleteFile = file;
+                        deleteFileName = config.GetValue("name");
+                    }
+                   
+                }
+                else
+                {
+                    if (GUILayout.Button(config.GetValue("name")))
+                    {
+
+                        int xVal;
+                        int.TryParse(config.GetValue("x"), out xVal);
+                        int yVal;
+                        int.TryParse(config.GetValue("y"), out yVal);
+                        bool fullscreen;
+                        bool.TryParse(config.GetValue("fullscreen"), out fullscreen);
+                        GameSettings.SCREEN_RESOLUTION_HEIGHT = yVal;
+                        GameSettings.SCREEN_RESOLUTION_WIDTH = xVal;
+                        GameSettings.FULLSCREEN = fullscreen;
+                        GameSettings.SaveSettings();
+                        Screen.SetResolution(xVal, yVal, fullscreen);
+                        Debug.Log("[AnyRes] Set screen resolution from preset");
+
+                    }
+                }
+            }
+            GUILayout.EndScrollView();
+            GUILayout.EndVertical();
+            GUILayout.EndHorizontal();
 
 			GUI.DragWindow ();
 
 		}
+        void ConfirmDelete(int id)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.Label("Confirm delete of " + deleteFileName);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+            GUILayout.FlexibleSpace();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Cancel"))
+            {
+                deleteEnabled = false;
+                confirmDeleteEnabled = false;
+            }
+            if (GUILayout.Button("Yes"))
+            {
 
-	}
+                //deleteEnabled = false;
+                confirmDeleteEnabled = false;
+                System.IO.File.Delete(deleteFile);
+                UpdateFilesList();
+            }
+            GUILayout.EndHorizontal();
+        }
+
+        void UpdateFilesList()
+        {
+            files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/PluginData/", "*.cfg");
+        }
+
+    }
+   
 }
 
