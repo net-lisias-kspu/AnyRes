@@ -36,8 +36,9 @@ namespace AnyRes
         bool deleteEnabled = false;
         bool confirmDeleteEnabled = false;
 
-        void Start() {
-
+        void Start()
+        {
+#if false
             if (HighLogic.LoadedScene == GameScenes.SETTINGS)
             {
 
@@ -46,7 +47,9 @@ namespace AnyRes
                 anyresWinRect.y = 231;
 
             }
-            else if (HighLogic.LoadedScene == GameScenes.EDITOR)
+            else 
+#endif
+            if (HighLogic.LoadedScene == GameScenes.EDITOR)
             {
 
                 anyresWinRect.x = Screen.width - 272;
@@ -171,11 +174,13 @@ namespace AnyRes
         }
 
 		void GUIActive(int windowID) {
-			if (HighLogic.LoadedScene == GameScenes.SETTINGS) {
+#if false
+            if (HighLogic.LoadedScene == GameScenes.SETTINGS) {
 
 				GUI.BringWindowToFront (09271);
 
 			}
+#endif
             GUILayout.BeginHorizontal();
 
             GUILayout.BeginVertical ();
