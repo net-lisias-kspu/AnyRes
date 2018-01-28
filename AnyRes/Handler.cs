@@ -26,8 +26,6 @@ namespace AnyRes
 		public bool fullScreen = true;
 		public bool reloadScene = false;
 
-		//private static ApplicationLauncherButton appLauncherButton = null;
-
         ToolbarControl toolbarControl;
 
         string[] files;
@@ -69,21 +67,28 @@ namespace AnyRes
             //DontDestroyOnLoad(this);
             UpdateFilesList();
 
-            toolbarControl = gameObject.AddComponent<ToolbarControl>();
-            toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
-            toolbarControl.AddToAllToolbars(OnTrue, OnFalse,
-                      ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW |
-                      ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.SPH | 
-                      ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
+           if (HighLogic.LoadedScene == GameScenes.SPACECENTER ||
+                HighLogic.LoadedScene == GameScenes.EDITOR ||
+                HighLogic.LoadedScene == GameScenes.FLIGHT ||
+                HighLogic.LoadedScene == GameScenes.TRACKSTATION)
+            {
+                Log.Info("SceneLoaded 1");
+                toolbarControl = gameObject.AddComponent<ToolbarControl>();
+                Log.Info("SceneLoaded 2");
+                toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
+                toolbarControl.AddToAllToolbars(OnTrue, OnFalse,
+                          ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW |
+                          ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.SPH |
+                          ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
+                          "AnyRes",
+                          "AnyResButton",
+                          "AnyRes/textures/Toolbar_32",
+                          "AnyRes/textures/Toolbar_24",
+                          "AnyRes");
 
-                      "AnyRes",
-                      "AnyResButton",
-                      "AnyRes/textures/Toolbar_32",
-                      "AnyRes/textures/Toolbar_24",
-                      "AnyRes"
-              );
-
+            }
         }
+
 
         void OnTrue()
         {
@@ -95,17 +100,12 @@ namespace AnyRes
         }
         public void OnDisable ()
 		{
-#if false
-            //Destroy the button in order to create a new one.  It's required with multiple scene handling, unfortunately.
-            if (appLauncherButton != null)
+
+            if (toolbarControl != null)
             {
-                ApplicationLauncher.Instance.RemoveModApplication(appLauncherButton);
-                appLauncherButton = null;
-                Debug.Log("[AnyRes] Remove application button");
+                toolbarControl.OnDestroy();
+                Destroy(toolbarControl);
             }
-#endif
-            toolbarControl.OnDestroy();
-            Destroy(toolbarControl);
         }
 
 
@@ -114,22 +114,7 @@ namespace AnyRes
             //Thanks bananashavings http://forum.kerbalspaceprogram.com/index.php?/profile/156147-bananashavings/ - https://gist.github.com/bananashavings/e698f4359e1628b5d6ef
             //Also thanks to Crzyrndm for the fix to that code!
             //(HighLogic.LoadedScene == GameScenes.TRACKSTATION || HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR)
-#if false
-            if (appLauncherButton == null && (HighLogic.LoadedScene == GameScenes.TRACKSTATION || HighLogic.LoadedScene == GameScenes.SPACECENTER || HighLogic.LoadedScene == GameScenes.FLIGHT || HighLogic.LoadedScene == GameScenes.EDITOR))
-            {
 
-                appLauncherButton = ApplicationLauncher.Instance.AddModApplication(
-                    () => { windowEnabled = true; },
-                    () => {   windowEnabled = false; },
-                    () => { },
-                    () => { },
-                    () => { },
-                    () => { },
-                    ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW | ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.SPH | ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
-                    (Texture)GameDatabase.Instance.GetTexture("AnyRes/textures/Toolbar", false));
-
-            }
-#endif
             if ((GameSettings.MODIFIER_KEY.GetKey() ) && Input.GetKeyDown (KeyCode.Slash)) {
 
 				windowEnabled = !windowEnabled;
@@ -161,10 +146,14 @@ namespace AnyRes
 		void OnGUI()
         {
             if (toolbarControl != null)
+            {
                 toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
-            GUI.skin = HighLogic.Skin;
+                if (HighLogic.CurrentGame.Parameters.CustomParams<AR>().useKSPSkin)
+                    GUI.skin = HighLogic.Skin;
+            }
+			if (windowEnabled)
+            {
 
-			if (windowEnabled) {
                 if (anyresWinRect.x + anyresWinRect.width > Screen.width)
                     anyresWinRect.x = Screen.width - anyresWinRect.width ;
                 if (anyresWinRect.y + anyresWinRect.height > Screen.height)
@@ -262,7 +251,7 @@ namespace AnyRes
                 config.AddValue("x", newX);
                 config.AddValue("y", newY);
                 config.AddValue("fullscreen", newFullscreen.ToString());
-                config.Save(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/" + newName + ".cfg");
+                config.Save(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/PluginData/" + newName + ".cfg");
 
                 ScreenMessages.PostScreenMessage("Preset saved.  You can change the preset later by using the same name in this editor.", 5, ScreenMessageStyle.UPPER_CENTER);
                 UpdateFilesList();

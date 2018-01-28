@@ -1,3 +1,9 @@
+2.0.0.1
+	Fixed nullref which occurred before getting to the SpaceCenter
+	Added logging class
+	Added new setting:  UseKSPSkin, in the settings page
+	Deleted some commented-out code
+
 2.0.0
 	Adoption by Linuxgurugamer
 	Rewrote all windows to make it a much simpler interface

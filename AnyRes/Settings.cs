@@ -26,6 +26,8 @@ namespace AnyRes
         [GameParameters.CustomParameterUI("Use Blizzy Toolbar", toolTip = "If available (will require scene change to activate)")]
         public bool useBlizzy = false;
 
+        [GameParameters.CustomParameterUI("Use KSP Skin")]
+        public bool useKSPSkin = true;
 
 
 
