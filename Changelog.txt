@@ -1,3 +1,6 @@
+2.0.0.3
+	Added missing toolbar buttons
+
 2.0.0.2
 	Disabled the window from appearing on the main Settings page
 
