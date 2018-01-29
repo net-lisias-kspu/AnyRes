@@ -1,5 +1,7 @@
+
 2.0.0.3
 	Added missing toolbar buttons
+	Fixed issue where multiple duplicate buttons were added in the Editor
 
 2.0.0.2
 	Disabled the window from appearing on the main Settings page

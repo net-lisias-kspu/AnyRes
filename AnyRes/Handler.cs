@@ -8,7 +8,7 @@ using ToolbarControl_NS;
 namespace AnyRes
 {
 
-	[KSPAddon(KSPAddon.Startup.EveryScene, false)]
+	[KSPAddon(KSPAddon.Startup.AllGameScenes, false)]
 	public class AnyRes : MonoBehaviour
 	{
 
@@ -36,6 +36,7 @@ namespace AnyRes
         bool deleteEnabled = false;
         bool confirmDeleteEnabled = false;
 
+
         void Start()
         {
 #if false
@@ -57,10 +58,10 @@ namespace AnyRes
 
             }
 
-            Debug.Log ("[AnyRes] Loaded");
-	
+            Debug.Log ("[AnyRes] Loaded, scene: " + HighLogic.LoadedScene);
+
             //Debug.Log("[AnyRes] 1");
-            
+
             xString = GameSettings.SCREEN_RESOLUTION_WIDTH.ToString ();
 			yString = GameSettings.SCREEN_RESOLUTION_HEIGHT.ToString ();
 			fullScreen = GameSettings.FULLSCREEN;
@@ -75,9 +76,8 @@ namespace AnyRes
                 HighLogic.LoadedScene == GameScenes.FLIGHT ||
                 HighLogic.LoadedScene == GameScenes.TRACKSTATION)
             {
-                Log.Info("SceneLoaded 1");
+                Log.Info("SceneLoaded, scene: " + HighLogic.LoadedScene);
                 toolbarControl = gameObject.AddComponent<ToolbarControl>();
-                Log.Info("SceneLoaded 2");
                 toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
                 toolbarControl.AddToAllToolbars(OnTrue, OnFalse,
                           ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW |
@@ -103,6 +103,10 @@ namespace AnyRes
         }
         public void OnDisable ()
 		{
+            OnDestroy();
+        }
+        public void OnDestroy()
+        {
 
             if (toolbarControl != null)
             {
@@ -110,7 +114,6 @@ namespace AnyRes
                 Destroy(toolbarControl);
             }
         }
-
 
         void Update() {
 
