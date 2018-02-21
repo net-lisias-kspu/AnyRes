@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.RegularExpressions;  //Get Regex
 using KSP.UI.Screens;
 using ToolbarControl_NS;
+using ClickThroughFix;
 
 namespace AnyRes
 {
@@ -169,11 +170,11 @@ namespace AnyRes
                 anyresWinRect.x = Math.Max(anyresWinRect.x, 0);
                 anyresWinRect.y = Math.Max(anyresWinRect.y, 0);
 
-                anyresWinRect = GUI.Window (09271, anyresWinRect, GUIActive, "AnyRes");
+                anyresWinRect = ClickThruBlocker.GUIWindow (09271, anyresWinRect, GUIActive, "AnyRes");
 
 			}
             if (confirmDeleteEnabled)
-                deleteRect = GUI.Window(09276, deleteRect, ConfirmDelete, "Confirm");
+                deleteRect = ClickThruBlocker.GUIWindow(09276, deleteRect, ConfirmDelete, "Confirm");
         }
 
 		void GUIActive(int windowID) {
@@ -333,7 +334,12 @@ namespace AnyRes
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
 
-			GUI.DragWindow ();
+            if (GUI.Button(new Rect(anyresWinRect.width - 18, 3f, 15f, 15f), new GUIContent("X")))
+            {
+                toolbarControl.SetFalse(true);
+            }
+
+            GUI.DragWindow ();
 
 		}
         void ConfirmDelete(int id)

@@ -1,3 +1,6 @@
+2.0.1
+	Added "X" to close the window
+	Added support for ClickThroughBlocker (now a dependency)
 
 2.0.0.3
 	Added missing toolbar buttons
