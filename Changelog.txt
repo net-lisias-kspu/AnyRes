@@ -1,3 +1,7 @@
+2.0.2.3
+	Updated .version file
+	Rebuilt for bad CKAN download
+
 2.0.2
 	Updated for 1.4.1
 
