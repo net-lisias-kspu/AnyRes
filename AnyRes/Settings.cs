@@ -22,10 +22,6 @@ namespace AnyRes
         public override int SectionOrder { get { return 3; } }
         public override bool HasPresets { get { return false; } }
 
-
-        [GameParameters.CustomParameterUI("Use Blizzy Toolbar", toolTip = "If available (will require scene change to activate)")]
-        public bool useBlizzy = false;
-
         [GameParameters.CustomParameterUI("Use KSP Skin")]
         public bool useKSPSkin = true;
 

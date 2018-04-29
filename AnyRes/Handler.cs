@@ -79,20 +79,20 @@ namespace AnyRes
             {
                 Log.Info("SceneLoaded, scene: " + HighLogic.LoadedScene);
                 toolbarControl = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
                 toolbarControl.AddToAllToolbars(OnTrue, OnFalse,
                           ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW |
                           ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.SPH |
                           ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
-                          "AnyRes",
+                          MODID,
                           "AnyResButton",
                           "AnyRes/textures/Toolbar_32",
                           "AnyRes/textures/Toolbar_24",
-                          "AnyRes");
+                          MODNAME);
 
             }
         }
-
+        internal const string MODID = "AnyRes_NS";
+        internal const string MODNAME = "AnyRes";
 
         void OnTrue()
         {
@@ -154,7 +154,6 @@ namespace AnyRes
         {
             if (toolbarControl != null)
             {
-                toolbarControl.UseBlizzy(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy);
                 if (HighLogic.CurrentGame.Parameters.CustomParams<AR>().useKSPSkin)
                     GUI.skin = HighLogic.Skin;
             }
@@ -287,8 +286,6 @@ namespace AnyRes
                     deleteEnabled = true;
                 }
             }
-            if (ToolbarManager.ToolbarAvailable)
-                HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy = GUILayout.Toggle(HighLogic.CurrentGame.Parameters.CustomParams<AR>().useBlizzy, "Use Blizzy button");
             GUILayout.EndVertical();
             GUILayout.BeginVertical();
          
