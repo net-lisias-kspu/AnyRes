@@ -1,3 +1,6 @@
+2.0.2.5
+	Added dependency lines to assemblyinfo
+
 2.0.2.4
 	Updated to use new ToolbarControl registration
 	Removed Blizzy from settings page
