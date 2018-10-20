@@ -1,5 +1,8 @@
+2.0.2.6
+	Version bump for 1.5 rebuild
+
 2.0.2.5
-	Added dependency lines to assemblyinfo
+	Updated version info
 
 2.0.2.4
 	Updated to use new ToolbarControl registration
