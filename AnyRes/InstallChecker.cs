@@ -40,7 +40,7 @@ namespace AnyRes
     [KSPAddon(KSPAddon.Startup.MainMenu, true)]
     internal class InstallChecker : MonoBehaviour
     {
-        internal const string MODNAME = "AnyRes";
+        internal const string MODNAME = "AnyRes Continued";
         internal const string FOLDERNAME = "AnyRes";
         internal const string EXPECTEDPATH = FOLDERNAME + "/Plugins";
 
