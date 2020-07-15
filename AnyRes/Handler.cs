@@ -286,6 +286,10 @@ namespace AnyRes
                     deleteEnabled = true;
                 }
             }
+            if (GUILayout.Button("Close"))
+            {
+                toolbarControl.SetFalse(true);
+            }
             GUILayout.EndVertical();
             GUILayout.BeginVertical();
          
