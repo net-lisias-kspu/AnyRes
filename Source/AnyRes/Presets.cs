@@ -1,8 +1,7 @@
-﻿#if false
-using System;
+﻿using System;
 using System.Text.RegularExpressions;
 using System.IO;
-using System.Collections.Generic;
+
 using UnityEngine;
 
 namespace AnyRes.Util
@@ -10,40 +9,32 @@ namespace AnyRes.Util
 	
 	public class Presets : MonoBehaviour
 	{
- 
-            
 
-		//public bool windowEnabled = false;
-		//public bool newEnabled = false;
-		//public bool loadEnabled = false;
-        //public bool deleteEnabled = false;
-        //public bool confirmDeleteEnabled = false;
-        //string deleteFile;
+		public bool windowEnabled = false;
+		public bool newEnabled = false;
+		public bool loadEnabled = false;
+		public bool deleteEnabled = false;
+		public bool confirmDeleteEnabled = false;
+		string deleteFile;
 
-		//public Rect windowRect = new Rect(30, 30, 200, 150);
-		//public Rect newRect = new Rect(30, 30, 200, 230);
-		//public Rect loadRect = new Rect(30, 30, 200, 400);
-        //public Rect deleteRect = new Rect((Screen.width - 200)/2, (Screen.height - 100) /2, 200, 100);
+		public Rect windowRect = new Rect(30, 30, 200, 150);
+		public Rect newRect = new Rect(30, 30, 200, 230);
+		public Rect loadRect = new Rect(30, 30, 200, 400);
+		public Rect deleteRect = new Rect((Screen.width - 200) / 2, (Screen.height - 100) / 2, 200, 100);
 
-		//string newName = "Name";
-		//string newX = "1280";
-		//string newY = "720";
-		//bool newFullscreen = false;
+		string newName = "Name";
+		string newX = "1280";
+		string newY = "720";
+		bool newFullscreen = false;
 
 		string[] files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/", "*.cfg");
         //string file = "";
 
-#if false
 		void Start () {
-
 			Debug.Log ("Started");
-
 		}
 
 		void Update () {
-
-
-
 		}
 
 
@@ -187,7 +178,7 @@ namespace AnyRes.Util
 			for (int i = files.Length - 1; i >= 0; --i)
 			{
 				
-				file = files[i];
+				string file = files[i];
 
 				ConfigNode config = ConfigNode.Load (file);
 				if (GUILayout.Button(config.GetValue("name"))) {
@@ -221,7 +212,7 @@ namespace AnyRes.Util
             for (int i = files.Length - 1; i >= 0; --i)
             {
 
-                file = files[i];
+                string file = files[i];
 
                 ConfigNode config = ConfigNode.Load(file);
                 if (GUILayout.Button(config.GetValue("name")))
@@ -238,8 +229,6 @@ namespace AnyRes.Util
             GUI.DragWindow();
 
         }
-#endif
+
     }
 }
-
-#endif

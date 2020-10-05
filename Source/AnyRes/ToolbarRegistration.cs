@@ -8,7 +8,7 @@ namespace AnyRes
     {
         void Start()
         {
-            ToolbarControl.RegisterMod(AnyRes.MODID, AnyRes.MODNAME);
+            ToolbarControl.RegisterMod(this.GetType().Namespace, "AnyRes");
         }
     }
 }

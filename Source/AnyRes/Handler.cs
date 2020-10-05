@@ -1,7 +1,9 @@
 ﻿using System;
-using UnityEngine;
 using System.Text.RegularExpressions;  //Get Regex
+
+using UnityEngine;
 using KSP.UI.Screens;
+
 using AnyRes.Util;
 
 namespace AnyRes

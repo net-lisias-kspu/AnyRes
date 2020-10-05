@@ -1,105 +1,66 @@
 ﻿using System;
-using System.Collections;
+using KSPe.Util.Log;
 using System.Diagnostics;
+
+#if DEBUG
+using System.Collections.Generic;
+#endif
 
 namespace AnyRes
 {
-    public static class Log
-    {
-        public enum LEVEL
-        {
-            OFF = 0,
-            ERROR = 1,
-            WARNING = 2,
-            INFO = 3,
-            DETAIL = 4,
-            TRACE = 5
-        };
+	public static class Log
+	{
+		private static readonly Logger log = Logger.CreateForType<Startup>();
 
-        public static LEVEL level = LEVEL.INFO;
+		internal static void force(string msg, params object[] @params)
+		{
+			log.force(msg, @params);
+		}
 
-        private static readonly String PREFIX = "ToolbarControl" + ": ";
+		internal static void info(string msg, params object[] @params)
+		{
+			log.info(msg, @params);
+		}
 
-        public static LEVEL GetLevel()
-        {
-            return level;
-        }
+		internal static void warn(string msg, params object[] @params)
+		{
+			log.warn(msg, @params);
+		}
 
-        public static void SetLevel(LEVEL level)
-        {
-            UnityEngine.Debug.Log("log level " + level);
-            Log.level = level;
-        }
+		internal static void detail(string msg, params object[] @params)
+		{
+			log.detail(msg, @params);
+		}
 
-        public static LEVEL GetLogLevel()
-        {
-            return level;
-        }
+		internal static void error(Exception e, object offended)
+		{
+			log.error(offended, e);
+		}
 
-        private static bool IsLevel(LEVEL level)
-        {
-            return level == Log.level;
-        }
+		internal static void error(string msg, params object[] @params)
+		{
+			log.error(msg, @params);
+		}
 
-        public static bool IsLogable(LEVEL level)
-        {
-            return level <= Log.level;
-        }
+		[ConditionalAttribute("DEBUG")]
+		internal static void dbg(string msg, params object[] @params)
+		{
+			log.trace(msg, @params);
+		}
 
-        public static void Trace(String msg)
-        {
-            if (IsLogable(LEVEL.TRACE))
-            {
-                UnityEngine.Debug.Log(PREFIX + msg);
-            }
-        }
+#if DEBUG
+		private static readonly HashSet<string> DBG_SET = new HashSet<string>();
+#endif
 
-        public static void Detail(String msg)
-        {
-            if (IsLogable(LEVEL.DETAIL))
-            {
-                UnityEngine.Debug.Log(PREFIX + msg);
-            }
-        }
-
-        [ConditionalAttribute("DEBUG")]
-        public static void Info(String msg)
-        {
-            if (IsLogable(LEVEL.INFO))
-            {
-                UnityEngine.Debug.Log(PREFIX + msg);
-            }
-        }
-
-        [ConditionalAttribute("DEBUG")]
-        public static void Test(String msg)
-        {
-            //if (IsLogable(LEVEL.INFO))
-            {
-                UnityEngine.Debug.LogWarning(PREFIX + "TEST:" + msg);
-            }
-        }
-
-        public static void Warning(String msg)
-        {
-            if (IsLogable(LEVEL.WARNING))
-            {
-                UnityEngine.Debug.LogWarning(PREFIX + msg);
-            }
-        }
-
-        public static void Error(String msg)
-        {
-            if (IsLogable(LEVEL.ERROR))
-            {
-                UnityEngine.Debug.LogError(PREFIX + msg);
-            }
-        }
-
-        public static void Exception(Exception e)
-        {
-            Log.Error("exception caught: " + e.GetType() + ": " + e.Message);
-        }
-
-    }
+		[ConditionalAttribute("DEBUG")]
+		internal static void dbgOnce(string msg, params object[] @params)
+		{
+			string new_msg = string.Format(msg, @params);
+#if DEBUG
+			if (DBG_SET.Contains(new_msg)) return;
+			DBG_SET.Add(new_msg);
+#endif
+			log.trace(new_msg);
+		}
+	}
 }

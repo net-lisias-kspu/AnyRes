@@ -4,12 +4,12 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle ("AnyRes")]
+[assembly: AssemblyTitle ("AnyRes /L Unofficial")]
 [assembly: AssemblyDescription ("")]
 [assembly: AssemblyConfiguration ("")]
 [assembly: AssemblyCompany ("")]
 [assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("Clifton")]
+[assembly: AssemblyCopyright ("© 2020 LisiasT")]
 [assembly: AssemblyTrademark ("")]
 [assembly: AssemblyCulture ("")]
 
@@ -25,5 +25,7 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
-[assembly: KSPAssemblyDependency("ClickThroughBlocker", 1, 0)]
+[assembly: KSPAssemblyDependency("KSPe", 2, 2)]
+[assembly: KSPAssemblyDependency("KSPe.UI", 2, 2)]
 [assembly: KSPAssemblyDependency("ToolbarController", 1, 0)]
+[assembly: AssemblyVersion(AnyRes.Version.Number)]
