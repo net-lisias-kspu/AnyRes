@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2018-0325: 2.0.2 (LinuxGuruGamer) for KSP 1.4.1
+	+ Updated for 1.4.1
 * 2018-0221: 2.0.1 (LinuxGuruGamer) for KSP 1.3.1
 	+ Added "X" to close the window
 	+ Added support for ClickThroughBlocker (now a dependency)
