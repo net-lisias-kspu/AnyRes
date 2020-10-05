@@ -4,9 +4,14 @@ using System.IO;
 
 using UnityEngine;
 
+using File = KSPe.IO.File<AnyRes.Startup>;
+using Asset = KSPe.IO.Asset<AnyRes.Startup>;
+using Data = KSPe.IO.Data<AnyRes.Startup>;
+using System.Collections.Generic;
+
 namespace AnyRes.Util
 {
-	
+
 	public class Presets : MonoBehaviour
 	{
 
@@ -15,7 +20,7 @@ namespace AnyRes.Util
 		public bool loadEnabled = false;
 		public bool deleteEnabled = false;
 		public bool confirmDeleteEnabled = false;
-		string deleteFile;
+		Data.ConfigNode deleteFile;
 
 		public Rect windowRect = new Rect(30, 30, 200, 150);
 		public Rect newRect = new Rect(30, 30, 200, 230);
@@ -27,11 +32,24 @@ namespace AnyRes.Util
 		string newY = "720";
 		bool newFullscreen = false;
 
-		string[] files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/PluginData/", "*.cfg");
-        //string file = "";
+		private readonly List<Data.ConfigNode> files = new List<Data.ConfigNode>();
 
 		void Start () {
 			Log.detail("Started");
+
+			if (!File.Data.Exists("presets"))
+			{
+				string[] files = File.Asset.List("*.cfg", false, "presets");
+				foreach (string f in files)
+				{
+					Asset.ConfigNode source = Asset.ConfigNode.For(null, "presets", f).Load();
+					Data.ConfigNode target = Data.ConfigNode.For(null, "presets", f);
+					target.Save(source.Node);
+					this.files.Add(target);
+				}
+			}
+			else
+				this.ReloadFiles();
 		}
 
 		void Update () {
@@ -95,14 +113,14 @@ namespace AnyRes.Util
 			if (GUILayout.Button ("Load")) {
 
 				loadEnabled = !loadEnabled;
-				files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/", "*.cfg");
+				this.ReloadFiles();
                 newEnabled = false;
 			}
             if (GUILayout.Button("Delete"))
             {
 
                 deleteEnabled = !deleteEnabled;
-                files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/", "*.cfg");
+				this.ReloadFiles();
                 newEnabled = false;
             }
             GUILayout.EndVertical ();
@@ -164,10 +182,11 @@ namespace AnyRes.Util
             }
             if (GUILayout.Button("Yes"))
             {
-
                 deleteEnabled = false;
                 confirmDeleteEnabled = false;
-                System.IO.File.Delete(deleteFile);
+				this.files.Remove(deleteFile);
+				deleteFile.Destroy();
+				deleteFile = null;
             }
             GUILayout.EndHorizontal();
         }
@@ -175,14 +194,10 @@ namespace AnyRes.Util
 		void onLoad (int windowID) {
             
 			GUILayout.BeginScrollView (new Vector2 (0, 0));
-			for (int i = files.Length - 1; i >= 0; --i)
+			foreach (Data.ConfigNode configNode in this.files)
 			{
-				
-				string file = files[i];
-
-				ConfigNode config = ConfigNode.Load (file);
+				ConfigNode config = configNode.Node;
 				if (GUILayout.Button(config.GetValue("name"))) {
-
 					int xVal;
 					int.TryParse(config.GetValue("x"), out xVal);
 					int yVal;
@@ -194,10 +209,10 @@ namespace AnyRes.Util
 					GameSettings.FULLSCREEN = fullscreen;
 					GameSettings.SaveSettings ();
 					Screen.SetResolution(xVal, yVal, fullscreen);
-					Log.detail("[Set screen resolution from preset");
+					Log.detail("Set screen resolution from preset");
 				}
-
 			}
+
 			GUILayout.EndScrollView ();
 
 			GUI.DragWindow ();
@@ -206,28 +221,32 @@ namespace AnyRes.Util
 
         void onDelete(int windowID)
         {
-
             GUILayout.BeginScrollView(new Vector2(0, 0));
-            for (int i = files.Length - 1; i >= 0; --i)
+			foreach (Data.ConfigNode configNode in this.files)
             {
-
-                string file = files[i];
-
-                ConfigNode config = ConfigNode.Load(file);
+				ConfigNode config = configNode.Node;
                 if (GUILayout.Button(config.GetValue("name")))
                 {
-
                     confirmDeleteEnabled = true;
-                    deleteFile = file;
-
+                    deleteFile = configNode;
                 }
-
             }
             GUILayout.EndScrollView();
 
             GUI.DragWindow();
 
         }
+
+		private void ReloadFiles()
+		{
+			this.files.Clear();
+			string[] files = File.Data.List("*.cfg", false, "presets");
+			foreach (string f in files)
+			{
+				Data.ConfigNode configNode = Data.ConfigNode.For(null, "presets", f).Load();
+				this.files.Add(configNode);
+			}
+		}
 
     }
 }
