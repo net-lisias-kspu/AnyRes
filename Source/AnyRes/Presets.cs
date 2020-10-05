@@ -1,43 +1,24 @@
-﻿using System;
-using System.Text.RegularExpressions;
-using System.IO;
+﻿using System.Collections.Generic;
 
 using UnityEngine;
 
 using File = KSPe.IO.File<AnyRes.Startup>;
 using Asset = KSPe.IO.Asset<AnyRes.Startup>;
 using Data = KSPe.IO.Data<AnyRes.Startup>;
-using System.Collections.Generic;
 
 namespace AnyRes.Util
 {
 
 	public class Presets : MonoBehaviour
 	{
+		internal readonly List<Data.ConfigNode> files = new List<Data.ConfigNode>();
 
-		public bool windowEnabled = false;
-		public bool newEnabled = false;
-		public bool loadEnabled = false;
-		public bool deleteEnabled = false;
-		public bool confirmDeleteEnabled = false;
-		Data.ConfigNode deleteFile;
-
-		public Rect windowRect = new Rect(30, 30, 200, 150);
-		public Rect newRect = new Rect(30, 30, 200, 230);
-		public Rect loadRect = new Rect(30, 30, 200, 400);
-		public Rect deleteRect = new Rect((Screen.width - 200) / 2, (Screen.height - 100) / 2, 200, 100);
-
-		string newName = "Name";
-		string newX = "1280";
-		string newY = "720";
-		bool newFullscreen = false;
-
-		private readonly List<Data.ConfigNode> files = new List<Data.ConfigNode>();
+		private Data.ConfigNode deleteFile = null;
 
 		void Start () {
-			Log.detail("Started");
+			Log.detail("Presets Starting");
 
-			if (!File.Data.Exists("presets"))
+			if (!System.IO.Directory.Exists(File.Data.Solve("presets")))
 			{
 				string[] files = File.Asset.List("*.cfg", false, "presets");
 				foreach (string f in files)
@@ -50,203 +31,51 @@ namespace AnyRes.Util
 			}
 			else
 				this.ReloadFiles();
+			Log.detail("Presets Started");
 		}
 
-		void Update () {
-		}
-
-
-        void OnGUI () {
-            
-			GUI.skin = HighLogic.Skin;
-
-			if (windowEnabled) {
-                if (windowRect.x + windowRect.width > Screen.width)
-                    AnyRes.anyresWinRect.x = Screen.width - AnyRes.anyresWinRect.width - windowRect.width;
-
-                if ( windowRect.height + windowRect.height > Screen.height)
-                    AnyRes.anyresWinRect.y = Screen.height - Math.Max(AnyRes.anyresWinRect.height, windowRect.height);
-
-                windowRect = GUI.Window (09272, windowRect, onWindow, "Presets");
-
-			}
-
-			if (newEnabled) {
-                if (newRect.x + newRect.width > Screen.width)
-                    AnyRes.anyresWinRect.x = Screen.width - AnyRes.anyresWinRect.width - newRect.width - windowRect.width; ;
-
-                if (newRect.y + newRect.height > Screen.height)
-                    AnyRes.anyresWinRect.y = Screen.height - Math.Max(AnyRes.anyresWinRect.height, newRect.height);
-
-                newRect = GUI.Window (09273, newRect, onNew, "New Preset");
-
-			}
-
-			if (loadEnabled | deleteEnabled) {
-
-                if (loadRect.x + loadRect.width > Screen.width)
-                    AnyRes.anyresWinRect.x = Screen.width - AnyRes.anyresWinRect.width - loadRect.width - windowRect.width; ;
-                if (loadRect.y + loadRect.height > Screen.height)
-                    AnyRes.anyresWinRect.y = Screen.height - Math.Max(AnyRes.anyresWinRect.height, loadRect.height);
-
-                if (loadEnabled)
-                    loadRect = GUI.Window(09274, loadRect, onLoad, "Load Preset");
-                else
-                    loadRect = GUI.Window(09275, loadRect, onDelete, "Delete Preset");
-
-            }
-            if (confirmDeleteEnabled)
-                deleteRect = GUI.Window(09276, deleteRect, ConfirmDelete, "Confirm");
-
-        }
-
-		void onWindow (int windowID) {
-
-			GUILayout.BeginVertical ();
-			if (GUILayout.Button ("New")) {
-
-				newEnabled = !newEnabled;
-                loadEnabled = false;
-
-
-            }
-			if (GUILayout.Button ("Load")) {
-
-				loadEnabled = !loadEnabled;
-				this.ReloadFiles();
-                newEnabled = false;
-			}
-            if (GUILayout.Button("Delete"))
-            {
-
-                deleteEnabled = !deleteEnabled;
-				this.ReloadFiles();
-                newEnabled = false;
-            }
-            GUILayout.EndVertical ();
-
-			GUI.DragWindow ();
-
-		}
-
-       
-		void onNew(int windowID) {
-
-			GUILayout.BeginVertical ();
-			newName = GUILayout.TextField (newName);
-			newX = GUILayout.TextField (newX);
-			newX = Regex.Replace (newX, @"[^0-9]", "");
-			newY = GUILayout.TextField (newY);
-			newY = Regex.Replace (newY, @"[^0-9]", "");
-			newFullscreen = GUILayout.Toggle (newFullscreen, "Fullscreen");
-			if (GUILayout.Button ("Save")) {
-
-				ConfigNode config = new ConfigNode (newName);
-				config.AddValue ("name", newName);
-				config.AddValue ("x", newX);
-				config.AddValue ("y", newY);
-				config.AddValue ("fullscreen", newFullscreen.ToString());
-				config.Save (KSPUtil.ApplicationRootPath.Replace ("\\", "/") + "GameData/AnyRes/presets/" + newName + ".cfg");
-
-				ScreenMessages.PostScreenMessage ("Preset saved.  You can change the preset later by using the same name in this editor.", 5, ScreenMessageStyle.UPPER_CENTER);
-
-			}
-			if (GUILayout.Button ("Cancel")) {
-				
-				newName = "Name";
-				newX = "1280";
-				newY = "720";
-				newFullscreen = false;
-				newEnabled = false;
-
-			}
-			GUILayout.EndVertical ();
-
-			GUI.DragWindow ();
-
-		}
-
-        void ConfirmDelete(int id)
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.Label("Confirm delete");
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
-            GUILayout.FlexibleSpace();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("Cancel"))
-            {
-                deleteEnabled = false;
-                confirmDeleteEnabled = false;
-            }
-            if (GUILayout.Button("Yes"))
-            {
-                deleteEnabled = false;
-                confirmDeleteEnabled = false;
-				this.files.Remove(deleteFile);
-				deleteFile.Destroy();
-				deleteFile = null;
-            }
-            GUILayout.EndHorizontal();
-        }
-
-		void onLoad (int windowID) {
-            
-			GUILayout.BeginScrollView (new Vector2 (0, 0));
-			foreach (Data.ConfigNode configNode in this.files)
-			{
-				ConfigNode config = configNode.Node;
-				if (GUILayout.Button(config.GetValue("name"))) {
-					int xVal;
-					int.TryParse(config.GetValue("x"), out xVal);
-					int yVal;
-					int.TryParse(config.GetValue("y"), out yVal);
-					bool fullscreen;
-					bool.TryParse (config.GetValue("fullscreen"), out fullscreen);
-					GameSettings.SCREEN_RESOLUTION_HEIGHT = yVal;
-					GameSettings.SCREEN_RESOLUTION_WIDTH = xVal;
-					GameSettings.FULLSCREEN = fullscreen;
-					GameSettings.SaveSettings ();
-					Screen.SetResolution(xVal, yVal, fullscreen);
-					Log.detail("Set screen resolution from preset");
-				}
-			}
-
-			GUILayout.EndScrollView ();
-
-			GUI.DragWindow ();
-
-		}
-
-        void onDelete(int windowID)
-        {
-            GUILayout.BeginScrollView(new Vector2(0, 0));
-			foreach (Data.ConfigNode configNode in this.files)
-            {
-				ConfigNode config = configNode.Node;
-                if (GUILayout.Button(config.GetValue("name")))
-                {
-                    confirmDeleteEnabled = true;
-                    deleteFile = configNode;
-                }
-            }
-            GUILayout.EndScrollView();
-
-            GUI.DragWindow();
-
-        }
-
-		private void ReloadFiles()
+		internal void ReloadFiles()
 		{
+            Log.detail("Presets reloading...");
 			this.files.Clear();
 			string[] files = File.Data.List("*.cfg", false, "presets");
 			foreach (string f in files)
 			{
+				Log.detail(f);
 				Data.ConfigNode configNode = Data.ConfigNode.For(null, "presets", f).Load();
 				this.files.Add(configNode);
 			}
+            Log.detail("Presets reloaded {0}", this.files.Count);
 		}
 
-    }
+		internal void MarkForDeletion(Data.ConfigNode configNode)
+		{
+			this.deleteFile = configNode;
+		}
+
+		internal string GetVictimName()
+		{
+			return null == this.deleteFile
+				? "<NULL>"
+				: this.deleteFile.Node.GetValue("name")
+			;
+		}
+
+		internal void Commit()
+		{
+            Log.detail("Preset removing {0}", deleteFile.Node.GetValues("name"), this.files.Count);
+			this.files.Remove(this.deleteFile);
+			this.deleteFile.Destroy();
+			this.deleteFile = null;
+            Log.detail("Preset removed. {0} left", this.files.Count);
+		}
+
+		internal void Create(ConfigNode config)
+		{
+			Data.ConfigNode configNode = Data.ConfigNode.For(null, "presets", config.GetValues("name") + ".cfg");
+			configNode.Save(config);
+			this.files.Add(configNode);
+			Log.detail("Preset created {0}, {1} total", config.GetValues("name"), this.files.Count);
+		}
+	}
 }

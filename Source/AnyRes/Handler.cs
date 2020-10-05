@@ -1,10 +1,14 @@
 ﻿using System;
-using UnityEngine;
-using System.IO;
 using System.Text.RegularExpressions;  //Get Regex
+
+using UnityEngine;
 using KSP.UI.Screens;
+
 using ToolbarControl_NS;
-using ClickThroughFix;
+
+using GUI = KSPe.UI.GUI;
+using Data = KSPe.IO.Data<AnyRes.Startup>;
+using File = KSPe.IO.File<AnyRes.Startup>;
 
 namespace AnyRes
 {
@@ -13,33 +17,33 @@ namespace AnyRes
 	public class AnyRes : MonoBehaviour
 	{
 
-		public static Rect anyresWinRect = new Rect(35, 99, 400, 275);
-        public Rect deleteRect = new Rect((Screen.width - 200) / 2, (Screen.height - 100) / 2, 200, 100);
+		private static Rect anyresWinRect = new Rect(35, 99, 400, 275);
+        private Rect deleteRect = new Rect((Screen.width - 200) / 2, (Screen.height - 100) / 2, 200, 100);
 
-        public string nameString = "";
-		public string xString = "1280";
-		public string yString = "720";
+        private string nameString = "";
+		private string xString = "1280";
+		private string yString = "720";
 
-		public int x = 1280;
-		public int y = 720;
+		private int x = 1280;
+		private int y = 720;
 
-		public bool windowEnabled = false;
-		public bool fullScreen = true;
-		public bool reloadScene = false;
+		private bool windowEnabled = false;
+		private bool fullScreen = true;
+		private bool reloadScene = false;
 
-        ToolbarControl toolbarControl;
+        private ToolbarControl toolbarControl;
 
-        string[] files;
-        string file = "";
-        string deleteFile = "";
-        string deleteFileName = "";
-        Vector2 scrollViewPos;
-        bool deleteEnabled = false;
-        bool confirmDeleteEnabled = false;
+        private Util.Presets presets;
+
+        private Vector2 scrollViewPos;
+        private bool deleteEnabled = false;
+        private bool confirmDeleteEnabled = false;
 
 
         void Start()
         {
+            this.presets = gameObject.AddComponent<Util.Presets>();
+
 #if false
             if (HighLogic.LoadedScene == GameScenes.SETTINGS)
             {
@@ -59,40 +63,36 @@ namespace AnyRes
 
             }
 
-            Debug.Log ("[AnyRes] Loaded, scene: " + HighLogic.LoadedScene);
-
-            //Debug.Log("[AnyRes] 1");
+            Log.detail("Loaded, scene: {0}", HighLogic.LoadedScene);
 
             xString = GameSettings.SCREEN_RESOLUTION_WIDTH.ToString ();
 			yString = GameSettings.SCREEN_RESOLUTION_HEIGHT.ToString ();
 			fullScreen = GameSettings.FULLSCREEN;
-            //Debug.Log("[AnyRes] 2");
 
 
             //DontDestroyOnLoad(this);
-            UpdateFilesList();
 
            if (HighLogic.LoadedScene == GameScenes.SPACECENTER ||
                 HighLogic.LoadedScene == GameScenes.EDITOR ||
                 HighLogic.LoadedScene == GameScenes.FLIGHT ||
                 HighLogic.LoadedScene == GameScenes.TRACKSTATION)
             {
-                Log.Info("SceneLoaded, scene: " + HighLogic.LoadedScene);
                 toolbarControl = gameObject.AddComponent<ToolbarControl>();
-                toolbarControl.AddToAllToolbars(OnTrue, OnFalse,
+                toolbarControl.AddToAllToolbars(
+                          OnTrue, OnFalse,
                           ApplicationLauncher.AppScenes.FLIGHT | ApplicationLauncher.AppScenes.MAPVIEW |
                           ApplicationLauncher.AppScenes.SPACECENTER | ApplicationLauncher.AppScenes.SPH |
                           ApplicationLauncher.AppScenes.TRACKSTATION | ApplicationLauncher.AppScenes.VAB,
-                          MODID,
+                          RegisterToolbar.MODID,
                           "AnyResButton",
-                          "AnyRes/textures/Toolbar_32",
-                          "AnyRes/textures/Toolbar_24",
-                          MODNAME);
-
+                          File.Asset.Solve("textures", "Toolbar_32"),
+                          File.Asset.Solve("textures", "Toolbar_24"),
+                          RegisterToolbar.MODNAME
+                    );
+                Log.detail("Toolbar Control registered");
             }
+
         }
-        internal const string MODID = "AnyRes_NS";
-        internal const string MODNAME = "AnyRes";
 
         void OnTrue()
         {
@@ -143,9 +143,9 @@ namespace AnyRes
 
 			}
 
-            //			Meant for debugging
-            //			Debug.Log ("X: " + anyresWinRect.x.ToString ());
-            //			Debug.Log ("Y: " + anyresWinRect.y.ToString ());
+			//Meant for debugging
+			Log.dbg("X: {0}", anyresWinRect.x);
+			Log.dbg("Y: {1}", anyresWinRect.y);
 
 
         }
@@ -169,11 +169,11 @@ namespace AnyRes
                 anyresWinRect.x = Math.Max(anyresWinRect.x, 0);
                 anyresWinRect.y = Math.Max(anyresWinRect.y, 0);
 
-                anyresWinRect = ClickThruBlocker.GUIWindow (09271, anyresWinRect, GUIActive, "AnyRes");
+                anyresWinRect = GUI.Window (09271, anyresWinRect, GUIActive, "AnyRes");
 
 			}
             if (confirmDeleteEnabled)
-                deleteRect = ClickThruBlocker.GUIWindow(09276, deleteRect, ConfirmDelete, "Confirm");
+                deleteRect = GUI.Window(09276, deleteRect, ConfirmDelete, "Confirm");
         }
 
 		void GUIActive(int windowID) {
@@ -203,7 +203,7 @@ namespace AnyRes
 			yString = Regex.Replace (yString, @"[^0-9]", "");
 			GUILayout.EndHorizontal ();
 			fullScreen = GUILayout.Toggle (fullScreen, "Fullscreen");
-//			reloadScene = GUILayout.Toggle (reloadScene, "Reload scene");
+			reloadScene = GUILayout.Toggle (reloadScene, "Reload scene");
 			if (GUILayout.Button("Set Screen Resolution")) {
 
 				if (xString != null && yString != null) {
@@ -218,66 +218,57 @@ namespace AnyRes
 						GameSettings.FULLSCREEN = fullScreen;
 						GameSettings.SaveSettings ();
 						Screen.SetResolution(x, y, fullScreen);
-						Debug.Log ("[AnyRes] Set screen resolution");
-#if false
-                        if (reloadScene) {
+						Log.detail("Set screen resolution");
 
+						if (reloadScene) {
 							if (HighLogic.LoadedScene != GameScenes.LOADING) {
-								HighLogic.LoadScene (HighLogic.LoadedScene);
+								HighLogic.LoadScene(HighLogic.LoadedScene);
 							} else {
-
 								ScreenMessages.PostScreenMessage("You cannot reload the scene while loading the game!", 1);
-
 							}
-
 						}
-#endif
 					} else {
-
 						ScreenMessages.PostScreenMessage("One or both of your values is too small.  Please enter a valid value.", 1, ScreenMessageStyle.UPPER_CENTER);
-
 					}
-
 				} else {
-
 					ScreenMessages.PostScreenMessage("The values you have set are invalid.  Please set a valid value.", 1, ScreenMessageStyle.UPPER_CENTER);
-
 				}
 
 			}
 
             if (nameString == "")
                 GUI.enabled = false;
+
             if (GUILayout.Button("Save"))
             {
-                var newName = nameString;
-                var newX = xString;
-                var newY = yString;
-                var newFullscreen = fullScreen;
+				string newName = nameString;
+				string newX = xString;
+				string newY = yString;
+				bool newFullscreen = fullScreen;
+
                 ConfigNode config = new ConfigNode(newName);
                 config.AddValue("name", newName);
                 config.AddValue("x", newX);
                 config.AddValue("y", newY);
                 config.AddValue("fullscreen", newFullscreen.ToString());
-                config.Save(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/PluginData/" + newName + ".cfg");
+                this.presets.Create(config);
 
                 ScreenMessages.PostScreenMessage("Preset saved.  You can change the preset later by using the same name in this editor.", 5, ScreenMessageStyle.UPPER_CENTER);
-                UpdateFilesList();
-
+                this.presets.ReloadFiles();
             }
 
 
-            if (files.Length == 0)
+            if (0 == this.presets.files.Count)
                 GUI.enabled = false;
             else
                 GUI.enabled = true;
+
             if (deleteEnabled)
             {
                 if (GUILayout.Button("Disable Delete"))
                 {
                     deleteEnabled = false;
                 }
-
             }
             else
             {
@@ -294,27 +285,22 @@ namespace AnyRes
             GUILayout.BeginVertical();
          
             scrollViewPos = GUILayout.BeginScrollView(scrollViewPos);
-            for (int i = files.Length - 1; i >= 0; --i)
-            {
 
-                file = files[i];
-
-                ConfigNode config = ConfigNode.Load(file);
+			foreach (Data.ConfigNode configNode in this.presets.files)
+			{
+				ConfigNode config = configNode.Node;
                 if (deleteEnabled)
                 {
                     if (GUILayout.Button("Delete " + config.GetValue("name")))
                     {
                         confirmDeleteEnabled = true;
-                        deleteFile = file;
-                        deleteFileName = config.GetValue("name");
+                        this.presets.MarkForDeletion(configNode);
                     }
-                   
                 }
                 else
                 {
                     if (GUILayout.Button(config.GetValue("name")))
                     {
-
                         int xVal;
                         int.TryParse(config.GetValue("x"), out xVal);
                         int yVal;
@@ -326,11 +312,11 @@ namespace AnyRes
                         GameSettings.FULLSCREEN = fullscreen;
                         GameSettings.SaveSettings();
                         Screen.SetResolution(xVal, yVal, fullscreen);
-                        Debug.Log("[AnyRes] Set screen resolution from preset");
-
+                        Log.detail("Set screen resolution from preset");
                     }
                 }
             }
+
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
             GUILayout.EndHorizontal();
@@ -343,11 +329,12 @@ namespace AnyRes
             GUI.DragWindow ();
 
 		}
+
         void ConfirmDelete(int id)
         {
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
-            GUILayout.Label("Confirm delete of " + deleteFileName);
+            GUILayout.Label("Confirm delete of " + this.presets.GetVictimName());
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
             GUILayout.FlexibleSpace();
@@ -357,20 +344,15 @@ namespace AnyRes
                 deleteEnabled = false;
                 confirmDeleteEnabled = false;
             }
+
             if (GUILayout.Button("Yes"))
             {
-
                 //deleteEnabled = false;
                 confirmDeleteEnabled = false;
-                System.IO.File.Delete(deleteFile);
-                UpdateFilesList();
+                this.presets.Commit();
             }
-            GUILayout.EndHorizontal();
-        }
 
-        void UpdateFilesList()
-        {
-            files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/PluginData/", "*.cfg");
+            GUILayout.EndHorizontal();
         }
 
     }
