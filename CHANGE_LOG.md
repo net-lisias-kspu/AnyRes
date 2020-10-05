@@ -1,5 +1,10 @@
 # AnyRes :: Change Log
 
+* 2016-0604: 1.3 (CliftonM) for KSP 1.1
+	+ Change log:
+		- Added the ability to create and load presets (#3)
+		- Attempted to fix NullReferenceExceptions
+		- Minor bug fixes, added some logging
 * 2016-0506: 1.2.1 (CliftonM) for KSP 1.1
 	+ Fixed permanent yaw problem (issue #4)
 	+ Please note:  the key has been rebound to alt + /
