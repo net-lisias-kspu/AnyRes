@@ -1,5 +1,13 @@
 # AnyRes :: Change Log
 
+* 2018-0127: 2.0.0 (LinuxGuruGamer) for KSP 1.3.1
+	+ Adoption by Linuxgurugamer
+	+ Rewrote all windows to make it a much simpler interface
+	+ Removed the confusing presets windows
+	+ Created Changelog file
+	+ Added support for ToolbarController, for Blizzy toolbar support
+	+ Added settings page for Toolbar control
+	+ Added Toggle on window for toolbar control
 * 2016-1106: 1.4.1 (CliftonM) for KSP 1.2 Support
 	+ Removed 'reload scene' option which caused the game to crash in some instances.
 * 2016-1009: 1.4 (CliftonM) for KSP 1.2 Support
