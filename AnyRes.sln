@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyRes", "AnyRes\AnyRes.csproj", "{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AnyRes", "Source\AnyRes\AnyRes.csproj", "{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
