@@ -27,7 +27,7 @@ namespace AnyRes.Util
 		string newY = "720";
 		bool newFullscreen = false;
 
-		string[] files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/presets/", "*.cfg");
+		string[] files = Directory.GetFiles(KSPUtil.ApplicationRootPath.Replace("\\", "/") + "GameData/AnyRes/PluginData/", "*.cfg");
         //string file = "";
 
 		void Start () {
