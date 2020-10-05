@@ -1,5 +1,8 @@
 # AnyRes :: Change Log
 
+* 2018-0504: 2.0.2.5 (LinuxGuruGamer) for KSP 1.4.3
+	+ Added dependency lines to assemblyinfo
+		- updated version
 * 2018-0429: 2.0.2.4 (LinuxGuruGamer) for KSP 1.4.2
 	+ Updated to use new ToolbarControl registration
 	+ Removed Blizzy from settings page
