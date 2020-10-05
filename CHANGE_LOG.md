@@ -1,5 +1,8 @@
 # AnyRes :: Change Log
 
+* 2020-0715: 2.0.4 (LinuxGuruGamer) for KSP 1.10.0
+	+ Added Close button
+	+ Updated pre/post build steps
 * 2019-1027: 2.0.3.3 (LinuxGuruGamer) for KSP 1.10.0
 	+ Really did the MiniAVC update
 * 2019-1027: 2.0.3.2 (LinuxGuruGamer) for KSP 1.8.0
