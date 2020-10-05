@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2018-1020: 2.0.2.6 (LinuxGuruGamer) for KSP 1.5.1
+	+ Version bump for 1.5 rebuild
 * 2018-0504: 2.0.2.5 (LinuxGuruGamer) for KSP 1.4.3
 	+ Added dependency lines to assemblyinfo
 		- updated version
