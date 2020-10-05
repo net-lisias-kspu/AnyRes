@@ -1,5 +1,52 @@
 # AnyRes :: Change Log
 
+* 2020-0715: 2.0.4 (LinuxGuruGamer) for KSP 1.10.0
+	+ Added Close button
+	+ Updated pre/post build steps
+* 2019-1027: 2.0.3.3 (LinuxGuruGamer) for KSP 1.10.0
+	+ Really did the MiniAVC update
+* 2019-1027: 2.0.3.2 (LinuxGuruGamer) for KSP 1.8.0
+	+ Updated MiniAVC.dll to 1.4.0.2 to fix a nasty CTD
+* 2019-1025: 2.0.3.1 (LinuxGuruGamer) for KSP 1.8.0
+	+ Updated MiniAVC.dll to 1.4.0
+* 2019-1021: 2.0.3 (LinuxGuruGamer) for KSP 1.8.0
+	+ Added InstallChecker
+	+ Rebuild for 1.8
+* 2019-0624: 2.0.2.8 (LinuxGuruGamer) for KSP 1.7.2
+	+ Version bump for 1.7.2
+	+ Fixed the AssemblyVersion.tt with correct info
+* 2019-0109: 2.0.2.7 (LinuxGuruGamer) for KSP 1.6.0
+* 2018-1020: 2.0.2.6 (LinuxGuruGamer) for KSP 1.5.1
+	+ Version bump for 1.5 rebuild
+* 2018-0504: 2.0.2.5 (LinuxGuruGamer) for KSP 1.4.3
+	+ Added dependency lines to assemblyinfo
+		- updated version
+* 2018-0429: 2.0.2.4 (LinuxGuruGamer) for KSP 1.4.2
+	+ Updated to use new ToolbarControl registration
+	+ Removed Blizzy from settings page
+* 2018-0327: 2.0.2.3 (LinuxGuruGamer) for KSP 1.4.1
+	+ Updated version info
+* 2018-0325: 2.0.2.1 (LinuxGuruGamer) for KSP 1.4.1
+	+ Updated version file
+* 2018-0325: 2.0.2 (LinuxGuruGamer) for KSP 1.4.1
+	+ Updated for 1.4.1
+* 2018-0221: 2.0.1 (LinuxGuruGamer) for KSP 1.3.1
+	+ Added "X" to close the window
+	+ Added support for ClickThroughBlocker (now a dependency)
+* 2018-0129: 2.0.0.3 (LinuxGuruGamer) for KSP 1.3.1
+	+ Added missing toolbar buttons
+	+ Fixed issue where multiple duplicate buttons were added in the Editor
+* 2018-0128: 2.0.0.2 (LinuxGuruGamer) for KSP 1.3.1
+	+ Disabled the window from showing up on the main stock settings page
+* 2018-0128: 2.0.0.1 (LinuxGuruGamer) for KSP 1.3.1 PRE-RELEASE
+* 2018-0127: 2.0.0 (LinuxGuruGamer) for KSP 1.3.1
+	+ Adoption by Linuxgurugamer
+	+ Rewrote all windows to make it a much simpler interface
+	+ Removed the confusing presets windows
+	+ Created Changelog file
+	+ Added support for ToolbarController, for Blizzy toolbar support
+	+ Added settings page for Toolbar control
+	+ Added Toggle on window for toolbar control
 * 2016-1106: 1.4.1 (CliftonM) for KSP 1.2 Support
 	+ Removed 'reload scene' option which caused the game to crash in some instances.
 * 2016-1009: 1.4 (CliftonM) for KSP 1.2 Support
