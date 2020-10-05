@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2018-0327: 2.0.2.3 (LinuxGuruGamer) for KSP 1.4.1
+	+ Updated version info
 * 2018-0325: 2.0.2.1 (LinuxGuruGamer) for KSP 1.4.1
 	+ Updated version file
 * 2018-0325: 2.0.2 (LinuxGuruGamer) for KSP 1.4.1
