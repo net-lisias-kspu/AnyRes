@@ -1,5 +1,8 @@
 # AnyRes :: Change Log
 
+* 2018-0221: 2.0.1 (LinuxGuruGamer) for KSP 1.3.1
+	+ Added "X" to close the window
+	+ Added support for ClickThroughBlocker (now a dependency)
 * 2018-0129: 2.0.0.3 (LinuxGuruGamer) for KSP 1.3.1
 	+ Added missing toolbar buttons
 	+ Fixed issue where multiple duplicate buttons were added in the Editor
