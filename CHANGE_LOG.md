@@ -1,5 +1,6 @@
 # AnyRes :: Change Log
 
+* 2018-0128: 2.0.0.1 (LinuxGuruGamer) for KSP 1.3.1 PRE-RELEASE
 * 2018-0127: 2.0.0 (LinuxGuruGamer) for KSP 1.3.1
 	+ Adoption by Linuxgurugamer
 	+ Rewrote all windows to make it a much simpler interface
