@@ -1,5 +1,8 @@
 # AnyRes :: Change Log
 
+* 2016-0506: 1.2.1 (CliftonM) for KSP 1.1
+	+ Fixed permanent yaw problem (issue #4)
+	+ Please note:  the key has been rebound to alt + /
 * 2016-0401: 1.2 (CliftonM) for KSP 1.1
 	+ Updated to KSP 1.1
 * 2016-0321: 1.1 (CliftonM) for KSP 0.7.3
