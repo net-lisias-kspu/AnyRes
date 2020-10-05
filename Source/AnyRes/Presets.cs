@@ -31,7 +31,7 @@ namespace AnyRes.Util
         //string file = "";
 
 		void Start () {
-			Debug.Log ("Started");
+			Log.detail("Started");
 		}
 
 		void Update () {
@@ -194,8 +194,7 @@ namespace AnyRes.Util
 					GameSettings.FULLSCREEN = fullscreen;
 					GameSettings.SaveSettings ();
 					Screen.SetResolution(xVal, yVal, fullscreen);
-					Debug.Log ("[AnyRes] Set screen resolution from preset");
-
+					Log.detail("[Set screen resolution from preset");
 				}
 
 			}

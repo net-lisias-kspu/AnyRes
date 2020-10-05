@@ -49,21 +49,13 @@ namespace AnyRes
 
             }
 
-            Debug.Log ("[AnyRes] Loaded");
-
 			presets = gameObject.AddComponent<Presets> () as Presets;
 
-			
-            //Debug.Log("[AnyRes] 1");
-            
             xString = GameSettings.SCREEN_RESOLUTION_WIDTH.ToString ();
 			yString = GameSettings.SCREEN_RESOLUTION_HEIGHT.ToString ();
 			fullScreen = GameSettings.FULLSCREEN;
-            //Debug.Log("[AnyRes] 2");
 
-            
             //DontDestroyOnLoad(this);
-
         }
 
 		public void OnDisable ()
@@ -74,7 +66,7 @@ namespace AnyRes
             {
                 ApplicationLauncher.Instance.RemoveModApplication(appLauncherButton);
                 appLauncherButton = null;
-                Debug.Log("[AnyRes] Remove application button");
+                Log.dbg("Remove application button");
             }
 
 		}
@@ -127,9 +119,9 @@ namespace AnyRes
             presets.newRect.x = presets.windowRect.xMin + presets.windowRect.width;
             presets.newRect.y = anyresWinRect.yMin;
 
-            //			Meant for debugging
-            //			Debug.Log ("X: " + anyresWinRect.x.ToString ());
-            //			Debug.Log ("Y: " + anyresWinRect.y.ToString ());
+            //	Meant for debugging
+            Log.dbg("X: {0}", anyresWinRect.x);
+            Log.dbg("Y: {0}", anyresWinRect.y);
 
 
 
@@ -203,7 +195,7 @@ namespace AnyRes
 						GameSettings.FULLSCREEN = fullScreen;
 						GameSettings.SaveSettings ();
 						Screen.SetResolution(x, y, fullScreen);
-						Debug.Log ("[AnyRes] Set screen resolution");
+						Log.detail("Set screen resolution");
 						if (reloadScene) {
 
 							if (HighLogic.LoadedScene != GameScenes.LOADING) {
