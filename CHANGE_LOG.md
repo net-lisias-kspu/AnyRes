@@ -1,5 +1,8 @@
 # AnyRes :: Change Log
 
+* 2018-0129: 2.0.0.3 (LinuxGuruGamer) for KSP 1.3.1
+	+ Added missing toolbar buttons
+	+ Fixed issue where multiple duplicate buttons were added in the Editor
 * 2018-0128: 2.0.0.2 (LinuxGuruGamer) for KSP 1.3.1
 	+ Disabled the window from showing up on the main stock settings page
 * 2018-0128: 2.0.0.1 (LinuxGuruGamer) for KSP 1.3.1 PRE-RELEASE
