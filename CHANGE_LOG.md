@@ -1,5 +1,10 @@
 # AnyRes :: Change Log
 
+* 2016-1009: 1.4 (CliftonM) for KSP 1.2 Support
+	+ Changelog
+		- Recompiled to 1.2
+		- Bug fixes
+		- Enhanced performance
 * 2016-0826: 1.3.2 (CliftonM) for KSP 1.1
 	+ I did basically nothing with this, so I'm giving credit where credit is due.  Linuxgurugamer put his time into making this happen.  Note: this is an official release of his unofficial build, so it's the exact same thing as what he released.
 	+ Change Log:
