@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2016-0702: 1.3.1 (CliftonM) for KSP 1.1
+	+ So, because we have 1.2 removing all foreach statements and linq usage, I decided to do the same.  No more foreach loops inside OnGUI().
 * 2016-0604: 1.3 (CliftonM) for KSP 1.1
 	+ Change log:
 		- Added the ability to create and load presets (#3)
