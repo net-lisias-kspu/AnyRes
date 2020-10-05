@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2019-1025: 2.0.3.1 (LinuxGuruGamer) for KSP 1.8.0
+	+ Updated MiniAVC.dll to 1.4.0
 * 2019-1021: 2.0.3 (LinuxGuruGamer) for KSP 1.8.0
 	+ Added InstallChecker
 	+ Rebuild for 1.8
