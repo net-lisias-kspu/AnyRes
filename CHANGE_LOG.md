@@ -1,5 +1,8 @@
 # AnyRes :: Change Log
 
+* 2019-1021: 2.0.3 (LinuxGuruGamer) for KSP 1.8.0
+	+ Added InstallChecker
+	+ Rebuild for 1.8
 * 2019-0624: 2.0.2.8 (LinuxGuruGamer) for KSP 1.7.2
 	+ Version bump for 1.7.2
 	+ Fixed the AssemblyVersion.tt with correct info
