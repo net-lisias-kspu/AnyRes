@@ -53,6 +53,7 @@
     <Reference Include="ToolbarControl">
       <HintPath>..\..\..\..\..\..\LIB\plugins\ToolbarControl.dll</HintPath>
     </Reference>
+    <Compile Include="Handler.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="$(KSPDIR)\KSP_x64_Data\Managed\Assembly*.dll">
