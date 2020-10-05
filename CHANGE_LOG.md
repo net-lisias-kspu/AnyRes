@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2016-1106: 1.4.1 (CliftonM) for KSP 1.2 Support
+	+ Removed 'reload scene' option which caused the game to crash in some instances.
 * 2016-1009: 1.4 (CliftonM) for KSP 1.2 Support
 	+ Changelog
 		- Recompiled to 1.2
