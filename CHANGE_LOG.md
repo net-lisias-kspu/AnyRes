@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2019-1027: 2.0.3.2 (LinuxGuruGamer) for KSP 1.8.0
+	+ Updated MiniAVC.dll to 1.4.0.2 to fix a nasty CTD
 * 2019-1025: 2.0.3.1 (LinuxGuruGamer) for KSP 1.8.0
 	+ Updated MiniAVC.dll to 1.4.0
 * 2019-1021: 2.0.3 (LinuxGuruGamer) for KSP 1.8.0
