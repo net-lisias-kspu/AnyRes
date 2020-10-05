@@ -12,9 +12,18 @@ Global
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}.KSP|Any CPU.ActiveCfg = KSP|Any CPU
-		{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}.KSP|Any CPU.Build.0 = KSP|Any CPU
 		{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EF0DCF13-9085-47FA-B1B3-55848AAAEE15}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(MonoDevelopProperties) = preSolution
+		Policies = $0
+		$0.TextStylePolicy = $1
+		$1.inheritsSet = null
+		$1.scope = text/x-csharp
+		$0.CSharpFormattingPolicy = $2
+		$2.scope = text/x-csharp
+		$0.TextStylePolicy = $3
+		$3.FileWidth = 132
+		$3.scope = text/plain
 	EndGlobalSection
 EndGlobal

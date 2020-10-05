@@ -1,7 +1,7 @@
 source ../CONFIG.inc
 
 PACKAGE="AnyRes"
-TARGETDIR="$PACKAGE/net.lisias.ksp/"
+TARGETDIR="net.lisias.ksp/$PACKAGE/"
 TARGETBINDIR="$TARGETDIR"
 PROJECTSDIR="$PACKAGE/"
 
