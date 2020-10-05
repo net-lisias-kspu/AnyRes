@@ -40,3 +40,7 @@ Please note the copyrights and trademarks in [NOTICE](./NOTICE)
 * CliftonM (Profile is M.I.A.) ROOT
 	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/134621-*)
 	+ [Github](https://github.com/KSP-RSP/AnyRes/files)
+* [LinuxGuruGamer](https://forum.kerbalspaceprogram.com/index.php?/profile/129964-linuxgurugamer/)
+	+ [Forum](https://forum.kerbalspaceprogram.com/index.php?/topic/170160-*)
+	+ [Spacedock](https://spacedock.info/mod/1681/AnyRes%20Continued)
+	+ [Github](https://github.com/linuxgurugamer/AnyRes/files)
