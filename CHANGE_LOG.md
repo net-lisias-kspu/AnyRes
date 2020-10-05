@@ -1,5 +1,7 @@
 # AnyRes :: Change Log
 
+* 2018-0128: 2.0.0.2 (LinuxGuruGamer) for KSP 1.3.1
+	+ Disabled the window from showing up on the main stock settings page
 * 2018-0128: 2.0.0.1 (LinuxGuruGamer) for KSP 1.3.1 PRE-RELEASE
 * 2018-0127: 2.0.0 (LinuxGuruGamer) for KSP 1.3.1
 	+ Adoption by Linuxgurugamer
