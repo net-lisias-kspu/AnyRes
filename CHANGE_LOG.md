@@ -1,5 +1,7 @@
 # AnyRes /L Unleashed :: Change Log
 
+* 2021-1029: 2.0.8.0 (LisiasT) for KSP >= 1.3
+	+ Updating to KSPe.UI v2.4 (Toolbar)
 * 2020-1005: 2.0.4.1 (LisiasT) for KSP >= 1.3
 	+ Adding KSPe facilities
 		- Log
