@@ -1,6 +1,8 @@
-# AnyRes /L Unofficial
+# AnyRes /L Unleashed
 
 A simple KSP mod to change to any resolution.
+
+[Unleashed](https://ksp.lisias.net/add-ons-unleashed/) fork by Lisias.
 
 
 ## Installation Instructions

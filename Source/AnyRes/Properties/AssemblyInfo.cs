@@ -4,13 +4,13 @@ using System.Runtime.CompilerServices;
 // Information about this assembly is defined by the following attributes.
 // Change them to the values specific to your project.
 
-[assembly: AssemblyTitle ("AnyRes /L Unofficial")]
-[assembly: AssemblyDescription ("")]
+[assembly: AssemblyTitle ("AnyRes /L Unleashed")]
+[assembly: AssemblyDescription ("A simple KSP mod to change to any resolution.")]
 [assembly: AssemblyConfiguration ("")]
-[assembly: AssemblyCompany ("")]
-[assembly: AssemblyProduct ("")]
-[assembly: AssemblyCopyright ("© 2020 LisiasT")]
-[assembly: AssemblyTrademark ("")]
+[assembly: AssemblyCompany (AnyRes.LegalMamboJambo.Company)]
+[assembly: AssemblyProduct (AnyRes.LegalMamboJambo.Product)]
+[assembly: AssemblyCopyright (AnyRes.LegalMamboJambo.Copyright)]
+[assembly: AssemblyTrademark (AnyRes.LegalMamboJambo.Trademark)]
 [assembly: AssemblyCulture ("")]
 
 // The assembly version has the format "{Major}.{Minor}.{Build}.{Revision}".
@@ -25,7 +25,6 @@ using System.Runtime.CompilerServices;
 //[assembly: AssemblyDelaySign(false)]
 //[assembly: AssemblyKeyFile("")]
 
-[assembly: KSPAssemblyDependency("KSPe", 2, 2)]
-[assembly: KSPAssemblyDependency("KSPe.UI", 2, 2)]
-[assembly: KSPAssemblyDependency("ToolbarController", 1, 0)]
 [assembly: AssemblyVersion(AnyRes.Version.Number)]
+[assembly: KSPAssemblyDependency("KSPe", 2, 4)]
+[assembly: KSPAssemblyDependency("KSPe.UI", 2, 4)]

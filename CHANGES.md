@@ -1,4 +1,4 @@
-# AnyRes :: Changes
+# AnyRes /L Unleashed :: Changes
 
 * 2020-1005: 2.0.4.1 (LisiasT) for KSP >= 1.3
 	+ Adding KSPe facilities
