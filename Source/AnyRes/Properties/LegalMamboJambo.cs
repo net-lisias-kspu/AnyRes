@@ -18,7 +18,7 @@ namespace AnyRes
 {
 	public static class LegalMamboJambo
 	{
-		public const string Company = "L Aerospace KSP Division";
+		public const string Company = "/L Aerospace KSP Division";
 		public const string Product = "AnyRes";
 		public const string Copyright = "©2021 Lisias";
 		public const string Trademark = "AnyRes™ by CriftonM; Continued™ by LinuxGuruGamer; /L Unleashed™ by Lisias";

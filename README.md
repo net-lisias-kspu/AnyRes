@@ -30,9 +30,7 @@ Detailed installation instructions are now on its own file (see the [In a Hurry]
 
 ## License:
 
-This work is licensed under [CC-BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0/). See the [LICENSE](./LICENSE).
-
-* Crew Light is double licensed as follows:
+* This work is double licensed as follows:
 	+ [SKL 1.0](https://ksp.lisias.net/SKL-1_0.txt). See [here](./LICENSE.KSPe.SKL-1_0)
 		+ You are free to:
 			- Use : unpack and use the material in any computer or device
